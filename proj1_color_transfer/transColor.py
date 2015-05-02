@@ -8,12 +8,13 @@ from PIL import Image
 import numpy as np
 import math as m
 import statistics as s
-
+ 
 if len(sys.argv) < 4:
     print("Usage:")
-    print("    python[3] transColor.py [-OMbav] <source_img> <target_img> <destination_img>")
+    print("    python[3] transColor.py [-ROMbav] <source_img> <target_img> <destination_img> [source_avg_r source_avg_g source_avg_b source_dev_r source_dev_g source_dev_b]")
     print("")
-    print("    [-OMbav] flags:")
+    print("    [-ROMbav] flags:")
+    print("    -R : reverse the operation, source_img will be treated as the converted img, flag M will be enable, flag b,a will be disabled and source_avg and source_dev is required")
     print("    -O : disable log at convertion")
     print("    -M : disable lms at convertion (Use pure RGB to convert) (Also disable log)")
     print("    -b : use boundary to convert instead of statistics method")
@@ -21,19 +22,45 @@ if len(sys.argv) < 4:
     print("    -v : show debug message")
     exit()
 
+# Default flog value
+reversing = False
+disable_log = False
+disable_lms = False
+use_boundary_method = False
+enable_boundary_adjust = False
+verbose = False
+
 if sys.argv[1][0] == "-":
+    reversing = "R" in sys.argv[1]
     disable_log = "O" in sys.argv[1]
     disable_lms = "M" in sys.argv[1]
     use_boundary_method = "b" in sys.argv[1]
     enable_boundary_adjust = "a" in sys.argv[1]
     verbose = "v" in sys.argv[1]
     sys.argv.pop(1)
-else: # Default flog value
-    disable_log = False
-    disable_lms = False
+
+if reversing:
+    disable_lms = True
     use_boundary_method = False
     enable_boundary_adjust = False
-    verbose = False
+    if len(sys.argv) < 10:
+        print("To reverse, the source_avg and source_dev is required")
+        exit()
+
+src_avg_f = False
+src_dev_f = False
+
+if len(sys.argv) >= 10:
+    source_info = sys.argv[4].split(",")
+    if float(sys.argv[4]) > 1:
+        src_avg_f = [float(e) / 255 for e in sys.argv[4:7]]
+        src_dev_f = [float(e) / 255 for e in sys.argv[7:10]]
+    else:
+        src_avg_f = [float(e) for e in sys.argv[4:7]]
+        src_dev_f = [float(e) for e in sys.argv[7:10]]
+
+# print(src_avg_f,src_dev_f)
+# exit()
 
 rgb2LMS = np.dot(
     np.array([0.3897,0.6890,-0.0787,-0.2298,1.1834,0.0464,0,0,1]).reshape(3,3),
@@ -60,6 +87,7 @@ if verbose:
     # exit()
 
 log_min = m.log(1/255,10)
+p_max = 255
 
 def get_lms(img):
     img_ary = np.array(img)
@@ -134,6 +162,11 @@ print("tar_min",tar_min)
 
 # exit()
 
+if src_avg_f and src_dev_f:
+    print("Using given source avg and dev...")
+    src_avg = src_avg_f
+    src_dev = src_dev_f
+
 print("Starting to process the destination image...")
 
 des_i = Image.new("RGB",src_i.size)
@@ -169,8 +202,12 @@ if use_boundary_method: # ================= boundary method ====================
 
 else: # ================== statistics method ======================
     scale = []
-    for i in [0,1,2]:
-        scale.append(tar_dev[i] / src_dev[i])# / dev_divider
+    if reversing:
+        for i in [0,1,2]:
+            scale.append(src_dev[i] / tar_dev[i])# / dev_divider
+    else:
+        for i in [0,1,2]:
+            scale.append(tar_dev[i] / src_dev[i])# / dev_divider
     
     print("Using statistics method ...")
     for y in range(src_i.size[0]):
@@ -206,6 +243,8 @@ if enable_boundary_adjust:
 
 too_big = 0
 too_small = 0
+mse = 0
+mse_n = 0
 
 for y in range(src_i.size[0]):
     for x in range(src_i.size[1]):
@@ -229,10 +268,18 @@ for y in range(src_i.size[0]):
                 too_small += 1
                 tmp[i] = 0
             des[x,y,i] = int(tmp[i] * 255)
+            src_tmp = int(src[y][x][i] * 255)
+            mse += (des[x,y,i] - src_tmp) ** 2
+            mse_n += 1
         # print(des[x,y])
 
-print("There are %d pixels in result that value is overflow ... Auto fix to 1" % too_big)
-print("There are %d pixels in result that value is underflow ... Auto fix to 0" % too_small)
+print("There are %d value overflow ... Auto fix to 1" % too_big)
+print("There are %d value underflow ... Auto fix to 0" % too_small)
+
+mse /= mse_n
+psnr = 10 * m.log((p_max**2)/mse,10)
+
+print("MSE between source and destination is %f\nPSNR between source and destination is %f" % (mse,psnr))
 
 # exit()
 Image.fromarray(des).save(sys.argv[3])
