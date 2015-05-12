@@ -54,11 +54,22 @@ python3 transColor.py -M test/01.png test/02.png test/01-02_RGB.png
 
 #### Command for Program 3: MSE and PSNR
 
-每次執行轉換時都對把 `<source_img>` 以及 `<destination_img>` 的 MSE 以及 PSNR 顯示出來，例如
+每次執行轉換時都對把 `<source_img>` 以及 `<destination_img>` 的 MSE 以及 PSNR 顯示出來， Command for Program 2 的執行過程會顯示如下
 
 ```
 MSE between source and destination is 202.200272
 PSNR between source and destination is 25.072986
+```
+
+或者直接呼叫 `mse_psnr.py <img1> <img2>` 比較兩個大小一樣的圖片，例如
+
+```
+$ python3 mse_psnr.py test/01.png test/01-02-back.png 
+Warning: the mode of two img is different
+ RGBA RGB
+Calculation started
+MSE between these two images is 26.631956
+PSNR between these two images is 33.876773
 ```
 
 #### Command for Program 4: Reverse RGB ‐ Color Transfer
@@ -66,12 +77,12 @@ PSNR between source and destination is 25.072986
 啟用 `R` flag，使用轉換過的圖放置在 `<source_img>` 的欄位，並且輸入原始圖的 三色平均值以及三色標準差，例如
 
 ```
-python3 transColor.py -R test/416-856.bmp test/856.bmp test/416-856-back.bmp 0.45171131807220521 0.49474325741038383 0.5059502545525576 0.18720403573878344 0.1863502133550516 0.2658009087882103
+python3 transColor.py -R test/01-02_RGB.png test/02.png test/01-02-back.png 0.61812778388356604 0.5922726351586115 0.55888856510740148 0.17549189130472714 0.15529417901646786 0.12953833340313659
 ```
 
 平均值以及標準差可以是 1 ~ 255 或者 0 ~ 1 皆可，程式會自動判斷，另外平均值可以在正向轉換時顯示出來：
 
 ```
-src_avg [0.45171131807220521, 0.49474325741038383, 0.5059502545525576]
-src_dev [0.18720403573878344, 0.1863502133550516, 0.2658009087882103]
+src_avg [0.61812778388356604, 0.5922726351586115, 0.55888856510740148]
+src_dev [0.17549189130472714, 0.15529417901646786, 0.12953833340313659]
 ```

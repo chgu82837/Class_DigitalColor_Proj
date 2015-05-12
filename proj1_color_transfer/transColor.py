@@ -243,7 +243,7 @@ if enable_boundary_adjust:
 
 too_big = 0
 too_small = 0
-mse = 0
+mse = 0.0
 mse_n = 0
 
 for y in range(src_i.size[0]):
