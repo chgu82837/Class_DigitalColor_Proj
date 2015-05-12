@@ -9,7 +9,9 @@ Proj_1 Color Transfer
  3. 把本作業需要的套件安裝好
     1. 範例指令：`sudo pip-3.2 install -r <本作業目錄>/requirements.txt` (`pip-3.2` 的部分會因版本而有所不同 )
 
-### Usage 使用方式
+### Usage 使用方式 (從 Python Script 執行)
+
+轉換部分：
 
 ```
 Usage:
@@ -24,7 +26,30 @@ Usage:
     -v : show debug message
 ```
 
+比較部分：
+
+```
+Usage:
+    python[3] mse_psnr.py <img1> <img2>
+```
+
 請注意本作業是以 `Python 3` 撰寫而成，所以必須要保證呼叫之直譯器版本為 `Python 3`
+
+#### 從包好的 `exe` 檔案執行 (For windows)
+
+同樣需要使用 `cmd` 來呼叫，呼叫之執行檔為 `<本專案目錄>\dist\transColor.exe` 以及 `<本專案目錄>\dist\mse_psnr.exe`，用來代替原本指令的 `python[3] transColor.py` / `python[3] mse_psnr.py` 部分即可  
+
+以 Reinhard Color Transfer (Using LMS) 為例：
+
+```
+<本專案目錄>\dist\transColor.exe <source_img> <target_img> <destination_img>
+```
+
+以 MSE / PSNR 計算為例：
+
+```
+<本專案目錄>\dist\mse_psnr.exe <img1> <img2>
+```
 
 #### Command for Program 1: Reinhard Color Transfer (Using LMS)
 
@@ -54,14 +79,7 @@ python3 transColor.py -M test/01.png test/02.png test/01-02_RGB.png
 
 #### Command for Program 3: MSE and PSNR
 
-每次執行轉換時都對把 `<source_img>` 以及 `<destination_img>` 的 MSE 以及 PSNR 顯示出來， Command for Program 2 的執行過程會顯示如下
-
-```
-MSE between source and destination is 202.200272
-PSNR between source and destination is 25.072986
-```
-
-或者直接呼叫 `mse_psnr.py <img1> <img2>` 比較兩個大小一樣的圖片，例如
+直接呼叫 `mse_psnr.py <img1> <img2>` 比較兩個大小一樣的圖片，例如
 
 ```
 $ python3 mse_psnr.py test/01.png test/01-02-back.png 
@@ -70,6 +88,13 @@ Warning: the mode of two img is different
 Calculation started
 MSE between these two images is 26.631956
 PSNR between these two images is 33.876773
+```
+
+或者每次執行轉換時都對把 `<source_img>` 以及 `<destination_img>` 的 MSE 以及 PSNR 顯示出來， Command for Program 2 的執行過程會顯示如下
+
+```
+MSE between source and destination is 202.200272
+PSNR between source and destination is 25.072986
 ```
 
 #### Command for Program 4: Reverse RGB ‐ Color Transfer

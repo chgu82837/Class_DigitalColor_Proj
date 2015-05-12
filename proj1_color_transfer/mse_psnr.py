@@ -38,7 +38,7 @@ print("Calculation started")
 for y in range(img1.size[0]):
     for x in range(img1.size[1]):
         for e in range(0,3):
-            mse += (img1_ary[x,y,e] - img2_ary[x,y,e]) ** 2
+            mse += (float(img1_ary[x,y,e]) - float(img2_ary[x,y,e])) ** 2
             mse_n += 1
 
 mse /= mse_n
