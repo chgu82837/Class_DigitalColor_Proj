@@ -51,6 +51,8 @@ Usage:
 <本專案目錄>\dist\mse_psnr.exe <img1> <img2>
 ```
 
+> 此 EXE 執行檔案是由 [py2exe](https://pypi.python.org/pypi/py2exe/) 產生
+
 #### Command for Program 1: Reinhard Color Transfer (Using LMS)
 
 Simply
