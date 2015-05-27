@@ -12,6 +12,11 @@ func main() {
     max,max_k,max_L,tmp := 0.0,0,0.0,0.0
     fmt.Printf("Please input n:")
     fmt.Scanf("%d\n", &n)
+    fmt.Printf("Please input H:")
+    fmt.Scanf("%d\n", &H)
+    fmt.Printf("Please inputn V:")
+    fmt.Scanf("%d\n", &V)
+
 
     // Log2 testing
     // fmt.Printf("%f,",math.Log2(float64(2 * n + 1)))

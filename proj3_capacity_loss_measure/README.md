@@ -5,8 +5,8 @@ Proj_3 Capacity Loss Measurement
 
  1. 打開 `CMD` 或者是 終端機
  2. `cd` 進入本資料夾
- 3. Windows: 執行 `EXE` 檔：`capacity_loss_measure.exe` / OSX: 執行 `out` 檔：`capacity_loss_measure.out`
- 4. 執行後程式會詢問要輸入的 `n` 值，輸入 `n` 值之後便開始計算 `MXC`
+ 3. Windows: 執行 `EXE` 檔：`proj3_capacity_loss_measure.exe` / OSX: 執行 `out` 檔：`proj3_capacity_loss_measure.out`
+ 4. 執行後程式會詢問要輸入的 `n` 值、 `H` 值、 `V` 值，輸入 `n` 值之後便開始計算 `MXC`
 
 例如：
 
