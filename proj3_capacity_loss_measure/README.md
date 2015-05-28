@@ -12,6 +12,8 @@ Proj_3 Capacity Loss Measurement
 
 ```
 Please input n:2
+Please input H:512
+Please inputn V:512
 Calculating ...
  n   | K   | L   | max_k | max     | result
  2   | 1   | 2   | 1     | 262144  | 262144
