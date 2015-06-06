@@ -28,22 +28,28 @@ func main() {
 
     K := 1
     L := math.Floor(math.Log2(float64(2 * n + 1)))
+    maxed := false
 
     fmt.Println("Calculating ...")
-    fmt.Println(" n     | K       | L       | max_k | max     | result")
+    fmt.Println(" n     | K       | L       | result")
     for K <= int(math.Floor(float64(H) * float64(V) / float64(n))) {
         tmp = math.Floor(math.Floor(float64(H * V / n)) / float64(K)) * L
+        maxed = false
         if tmp > max && L <= 64.0 {
             max_k = K
             max_L = L
             max = tmp
+            maxed = true
         }
         if tmp > max_o {
             max_k_o = K
             max_L_o = L
             max_o = tmp
+            maxed = true
         }
-        fmt.Printf(" %-5d | %-7d | %-7.0f | %-5d | %-7.0f | %-.0f\n",n,K,L,max_k,max,tmp)
+        if maxed {
+            fmt.Printf(" %-5d | %-7d | %-7.0f | %-.0f\n",n,K,L,tmp)
+        }
         K++
         L = math.Floor(float64(K) * math.Log2(float64(2 * n + 1)))
     }
