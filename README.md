@@ -1,4 +1,4 @@
-# digital_color
+# digitalColor_Proj
 數位色彩科學導論與應用 作業研究結果
 
 本課程是這學期新開的課程，基本上老師會教大家  
